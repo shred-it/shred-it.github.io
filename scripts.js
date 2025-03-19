@@ -1,4 +1,4 @@
-// cursor trail
+// Cursor trail
 document.addEventListener('mousemove', function(e) {
   const dot = document.createElement('div');
   dot.classList.add('trail-dot');
@@ -14,9 +14,18 @@ document.addEventListener('mousemove', function(e) {
 // Load navigation bar
 window.addEventListener('DOMContentLoaded', () => {
   fetch('nav.html')
-    .then(res => res.text())
+    .then(res => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      return res.text();
+    })
     .then(data => {
       document.getElementById('nav-placeholder').innerHTML = data;
+      console.log("Navigation loaded successfully.");
+    })
+    .catch(error => {
+      console.error("Failed to load navigation:", error);
+      document.getElementById('nav-placeholder').innerText = "[Navigation failed to load]";
     });
 });
-// future scripts can go here
