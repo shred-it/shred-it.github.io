@@ -1,3 +1,4 @@
+// Debug marker
 console.log("📛 SCRIPTS.JS LOADED");
 
 // Cursor trail effect
@@ -14,7 +15,7 @@ document.addEventListener('mousemove', function(e) {
   }, 100);
 });
 
-// Load shared navigation into #nav-placeholder
+// Load navigation bar
 document.addEventListener('DOMContentLoaded', function () {
   const navPlaceholder = document.getElementById('nav-placeholder');
   if (!navPlaceholder) {
@@ -24,14 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   fetch('nav.html')
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
       return response.text();
     })
     .then(data => {
       navPlaceholder.innerHTML = data;
-      console.log("✅ Navigation successfully loaded.");
+      console.log("✅ Navigation successfully inserted.");
     })
     .catch(error => {
       console.error("❌ Failed to load navigation:", error);
