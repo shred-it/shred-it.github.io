@@ -1,87 +1,96 @@
 /* CSS is how you can add style to your website, such as colors, fonts, and positioning of your
    HTML content. To learn how to do something, just try searching Google for questions like
    "how to change link color." */
+/* Navigation styles */
 .navbar {
-   background-color: #111;
-   padding: 10px 20px;
-   position: sticky;
-   top: 0;
-   z-index: 10000;
-   border-bottom: 2px solid #FFBB55;
+  background-color: #111;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  border-bottom: 2px solid #FFBB55;
+  box-shadow: 0 2px 8px rgba(255, 187, 85, 0.3);
 }
+
 .navbar ul {
-   list-style: none;
-   margin: 0;
-   padding: 0;
-   display: flex;
-   gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
 }
-      
+
 .navbar li {
-   display: inline;
+  margin: 0;
+  padding: 0;
 }
-      
+
 .navbar a {
-   color: #E597E4;
-   font-weight: bold;
-   text-decoration: none;
-   font-size: 16px;
-   transition: color 0.3s;
+  color: #E597E4;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 6px 10px;
+  transition: color 0.3s, background-color 0.3s;
+  border-radius: 6px;
 }
-      
+
 .navbar a:hover {
-   color: #FFBB55;
+  color: #FFBB55;
+  background-color: #222;
 }
+
 /* Style for cursor trail dot */
 .trail-dot {
-   position: absolute;
-   width: 8px;
-   height: 8px;
-   background-color: #E597E4;
-   border-radius: 50%;
-   pointer-events: none;
-   opacity: 0.7;
-   box-shadow: 0 0 8px #E597E4;
-   z-index: 9999;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #E597E4;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.7;
+  box-shadow: 0 0 8px #E597E4;
+  z-index: 9999;
 }
 
 body {
-   background-color: black;
-   color: #FFBB55;
-   font-family: 'Courier New', Courier, monospace;
-   font-size: 16px;
-   padding: 20px;
-   line-height: 1.5;
-   position: relative;
-   overflow-x: hidden;
+  background-color: black;
+  color: #FFBB55;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  padding: 20px;
+  line-height: 1.5;
+  position: relative;
+  overflow-x: hidden;
 }
 
 a {
-   color: #FE2101;
-   font-weight: bold;
-   text-decoration: none;
-   }
+  color: #FE2101;
+  font-weight: bold;
+  text-decoration: none;
+}
 
 a:hover {
-   text-decoration: underline;
+  text-decoration: underline;
 }
 
 img {
-   display: block;
-   margin-top: 20px;
-   max-width: 100%;
-   border: 2px solid #FFBB55;
+  display: block;
+  margin-top: 20px;
+  max-width: 100%;
+  border: 2px solid #FFBB55;
 }
 
 .cursor {
-   display: inline-block;
-   width: 10px;
-   height: 1em;
-   vertical-align: middle; /* middle aligned now */
-   background-color: #FFBB55;
-   animation: blink 1s step-start infinite;
+  display: inline-block;
+  width: 10px;
+  height: 1em;
+  vertical-align: middle;
+  background-color: #FFBB55;
+  animation: blink 1s step-start infinite;
 }
 
 @keyframes blink {
-   50% { background-color: transparent; }
+  50% { background-color: transparent; }
 }
