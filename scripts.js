@@ -1,3 +1,5 @@
+console.log("📛 SCRIPTS.JS LOADED");
+
 // Cursor trail effect
 document.addEventListener('mousemove', function(e) {
   const dot = document.createElement('div');
