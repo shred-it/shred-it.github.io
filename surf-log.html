@@ -98,7 +98,7 @@
   <div id="calendar" class="calendar"></div>
   <div id="log-entry-container"></div>
 
-  <script src="scripts.js?v=2" defer></script>
+  <script src="scripts.js?v=2"></script>
   <script>
     const calendarContainer = document.getElementById('calendar');
     const logContainer = document.getElementById('log-entry-container');
@@ -140,6 +140,7 @@
 
       for (let i = 0; i < firstDay; i++) {
         const emptyCell = document.createElement('div');
+        emptyCell.classList.add('calendar-day');
         calendarContainer.appendChild(emptyCell);
       }
 
@@ -157,6 +158,9 @@
         calendarContainer.appendChild(dayEl);
       }
     }
+
+    // Ensure calendar shows on page load
+    window.addEventListener('DOMContentLoaded', buildCalendar);
 
     function showEntry(dateStr) {
       const entry = logData[dateStr];
