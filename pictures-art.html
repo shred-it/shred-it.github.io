@@ -32,8 +32,8 @@
       gap: 12px;
     }
     .gallery-item {
-      border: 1px solid #FFBB55;
-      background-color: #1a1a1a;
+      border: 0px solid #FFBB55;
+      background-color: #000000;
       padding: 6px;
       border-radius: 6px;
       cursor: pointer;
@@ -77,33 +77,51 @@
 </head>
 <body>
   <div id="nav-placeholder">[Loading navigation...]</div>
-  <h1>Pictures & Art</h1>
+  <h1>Pictures & Art<span class="cursor"></span></h1>
   <div class="filter-bar">
-    <button onclick="filterGallery('all')">All</button>
-    <button onclick="filterGallery('surf')">Surf</button>
-    <button onclick="filterGallery('drawings')">Drawings</button>
-    <button onclick="filterGallery('film')">Film</button>
+    <!--<button onclick="filterGallery('all')">All</button>
+    <button onclick="filterGallery('photos')">Photos</button>
+    <button onclick="filterGallery('travel')">Travel</button>
+    <button onclick="filterGallery('art')">Art</button>
+    <button onclick="filterGallery('vids')">Vids</button> -->
   </div>
 
   <div class="gallery-grid" id="gallery">
-    <!-- Example image -->
+    <!-- Example image 
     <div class="gallery-item" data-tag="surf" onclick="openModal(this)">
       <img src="images/pictures-art/sample-surf.jpg" alt="Surf Art">
+    </div> -->
+
+    <div class="gallery-item" data-tag="gif" onclick="openModal(this)">
+      <img src="images/pictures-art/johnsarge.gif" alt="Surf Art">
+    </div>
+  
+    <div class="gallery-item" data-tag="gif" onclick="openModal(this)">
+      <img src="images/pictures-art/paulsarge.gif" alt="Surf Art">
     </div>
 
     <!-- Example drawing -->
-    <div class="gallery-item" data-tag="drawings" onclick="openModal(this)">
-      <img src="images/pictures-art/sample-drawing.jpg" alt="Drawing">
+    <div class="gallery-item" data-tag="cat" onclick="openModal(this)">
+      <img src="images/pictures-art/babyboy.png" alt="Drawing">
     </div>
 
     <!-- Example video -->
-    <div class="gallery-item" data-tag="film" onclick="openModal(this)">
+    <!--<div class="gallery-item" data-tag="Vids" onclick="openModal(this)">
       <video muted>
-        <source src="videos/surf-log/sample-video.mp4" type="video/mp4">
+        <source src="videos/surf-log/31925.mp4" type="video/mp4">
         Your browser does not support the video tag.
       </video>
     </div>
+  </div> -->
+  
+  <div class="gallery-item" data-tag="gif" onclick="openModal(this)">
+    <img src="images/pictures-art/ringosarg.gif" alt="Surf Art">
   </div>
+
+  <div class="gallery-item" data-tag="gif" onclick="openModal(this)">
+    <img src="images/pictures-art/georgesarg.gif" alt="Surf Art">
+  </div>
+
 
   <!-- Modal Viewer -->
   <div id="mediaModal" class="modal" onclick="closeModal()">
