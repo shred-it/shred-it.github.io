@@ -97,6 +97,17 @@
   <div id="log-entry" class="log-entry"></div>
 
   <script>
+    // Load reusable navigation bar
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('nav.html')
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById('nav-placeholder').innerHTML = data;
+        });
+    });
+  </script>
+
+  <script>
     document.addEventListener('DOMContentLoaded', function () {
       const calendarHeader = document.getElementById('calendar-header');
       const calendarDays = document.getElementById('calendar-days');
@@ -191,6 +202,7 @@
   </script>
 </body>
 </html>
+
 
 
 
