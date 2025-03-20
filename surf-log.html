@@ -97,14 +97,13 @@
   <div id="log-entry" class="log-entry"></div>
 
   <script>
-    // Load reusable navigation bar
-    document.addEventListener('DOMContentLoaded', function () {
-      fetch('nav.html')
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById('nav-placeholder').innerHTML = data;
-        });
-    });
+    // Load navigation bar
+    fetch('nav.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+      })
+      .catch(err => console.error('Navigation load failed', err));
   </script>
 
   <script>
@@ -202,9 +201,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
