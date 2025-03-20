@@ -77,7 +77,7 @@
 </head>
 <body>
   <div id="nav-placeholder">[Loading navigation...]</div>
-  <h1>Photos, Vidoes, and Art</h1>
+  <h1>Pictures & Art</h1>
   <div class="filter-bar">
     <button onclick="filterGallery('all')">All</button>
     <button onclick="filterGallery('surf')">Surf</button>
@@ -112,6 +112,14 @@
   </div>
 
   <script>
+    // Load navigation bar
+    fetch('nav.html')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('nav-placeholder').innerHTML = data;
+      })
+      .catch(err => console.error('Navigation load failed', err));
+
     function filterGallery(tag) {
       const items = document.querySelectorAll('.gallery-item');
       items.forEach(item => {
@@ -151,3 +159,4 @@
   </script>
 </body>
 </html>
+
