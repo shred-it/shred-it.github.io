@@ -62,7 +62,7 @@ body {
 .cursor {
   display: inline-block;
   width: 10px;
-  height: 16px;
+  height: 25px;
   background-color: #FFBB55;
   animation: blink 1s steps(2, start) infinite;
   vertical-align: middle;
