@@ -6,49 +6,54 @@
   <title>Surf Log Calendar</title>
   <link rel="stylesheet" href="style.css?v=2">
   <style>
+    body {
+      background-color: black;
+      color: #FFBB55;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+    .calendar-container {
+      max-width: 900px;
+      margin: auto;
+    }
     .calendar-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 20px;
+      margin-bottom: 10px;
     }
     .calendar-nav button {
-      background: #111;
+      background-color: #111;
       color: #FFBB55;
       border: 1px solid #FFBB55;
-      padding: 8px 12px;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
-      border-radius: 6px;
     }
     .calendar-nav h2 {
       margin: 0;
       font-size: 1.5rem;
-      color: #FFBB55;
     }
-    .calendar-header {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      margin-top: 10px;
-      text-align: center;
-      color: #FFBB55;
-      font-weight: bold;
-    }
-    .calendar {
+    .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       gap: 8px;
-      margin-top: 5px;
+    }
+    .calendar-header {
+      font-weight: bold;
+      text-align: center;
+      padding-bottom: 10px;
     }
     .calendar-day {
-      border: 1px solid #FFBB55;
-      padding: 12px;
-      text-align: center;
-      cursor: pointer;
       background-color: #111;
-      color: #FFBB55;
+      border: 1px solid #FFBB55;
       border-radius: 8px;
+      padding: 12px;
+      min-height: 80px;
       position: relative;
+      cursor: pointer;
+      text-align: center;
     }
     .calendar-day.marked::after {
       content: "";
@@ -62,125 +67,128 @@
       transform: translateX(-50%);
     }
     .log-entry {
-      margin-top: 20px;
-      padding: 16px;
+      margin-top: 30px;
       border: 1px solid #FFBB55;
       background-color: #1c1c1c;
-      border-radius: 12px;
+      padding: 16px;
+      border-radius: 10px;
+      display: none;
     }
     .log-entry img {
       max-width: 100%;
-      margin-top: 12px;
       border: 2px solid #FFBB55;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div id="nav-placeholder">[Loading navigation...]</div>
   <h1>Surf Log</h1>
-
-  <div class="calendar-nav">
-    <button id="prev-month">◀ Prev</button>
-    <h2 id="month-year-label"></h2>
-    <button id="next-month">Next ▶</button>
+  <div class="calendar-container">
+    <div class="calendar-nav">
+      <button id="prev-month">◀ Prev</button>
+      <h2 id="month-year"></h2>
+      <button id="next-month">Next ▶</button>
+    </div>
+    <div class="calendar-grid" id="calendar-header"></div>
+    <div class="calendar-grid" id="calendar-days"></div>
   </div>
+  <div id="log-entry" class="log-entry"></div>
 
-  <div class="calendar-header">
-    <div>Sun</div>
-    <div>Mon</div>
-    <div>Tue</div>
-    <div>Wed</div>
-    <div>Thu</div>
-    <div>Fri</div>
-    <div>Sat</div>
-  </div>
-
-  <div id="calendar" class="calendar"></div>
-  <div id="log-entry-container"></div>
-
-  <script src="scripts.js?v=2"></script>
   <script>
-    const calendarContainer = document.getElementById('calendar');
-    const logContainer = document.getElementById('log-entry-container');
-    const monthLabel = document.getElementById('month-year-label');
-    const prevBtn = document.getElementById('prev-month');
-    const nextBtn = document.getElementById('next-month');
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarHeader = document.getElementById('calendar-header');
+      const calendarDays = document.getElementById('calendar-days');
+      const monthYearLabel = document.getElementById('month-year');
+      const logEntry = document.getElementById('log-entry');
+      const prevBtn = document.getElementById('prev-month');
+      const nextBtn = document.getElementById('next-month');
 
-    let current = new Date();
-    current.setDate(1);
+      const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      let currentDate = new Date();
+      currentDate.setDate(1);
+      let logData = {};
 
-    let logData = {};
-
-    function buildCalendar() {
-      calendarContainer.innerHTML = '';
-      const year = current.getFullYear();
-      const month = current.getMonth();
-
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const firstDay = new Date(year, month, 1).getDay();
-
-      monthLabel.textContent = `${current.toLocaleString('default', { month: 'long' })} ${year}`;
-
-      for (let i = 0; i < firstDay; i++) {
-        const emptyCell = document.createElement('div');
-        emptyCell.classList.add('calendar-day');
-        calendarContainer.appendChild(emptyCell);
+      function initializeCalendarHeader() {
+        calendarHeader.innerHTML = '';
+        weekdays.forEach(day => {
+          const cell = document.createElement('div');
+          cell.classList.add('calendar-header');
+          cell.textContent = day;
+          calendarHeader.appendChild(cell);
+        });
       }
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        const dayEl = document.createElement('div');
-        dayEl.classList.add('calendar-day');
-        dayEl.textContent = day;
+      function renderCalendar() {
+        calendarDays.innerHTML = '';
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
 
-        if (logData[dateStr]) {
-          dayEl.classList.add('marked');
+        monthYearLabel.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+
+        for (let i = 0; i < firstDay; i++) {
+          const empty = document.createElement('div');
+          calendarDays.appendChild(empty);
         }
 
-        dayEl.addEventListener('click', () => showEntry(dateStr));
-        calendarContainer.appendChild(dayEl);
-      }
-    }
+        for (let day = 1; day <= daysInMonth; day++) {
+          const cell = document.createElement('div');
+          cell.classList.add('calendar-day');
+          cell.textContent = day;
 
-    function showEntry(dateStr) {
-      const entry = logData[dateStr];
-      logContainer.innerHTML = '';
-      if (entry) {
-        const entryDiv = document.createElement('div');
-        entryDiv.classList.add('log-entry');
-        entryDiv.innerHTML = `<h3>${dateStr}</h3><p>${entry.note}</p>`;
-        if (entry.image) {
-          const img = document.createElement('img');
-          img.src = entry.image;
-          img.alt = `Surf log image for ${dateStr}`;
-          entryDiv.appendChild(img);
+          const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          if (logData[dateStr]) {
+            cell.classList.add('marked');
+          }
+
+          cell.onclick = () => showEntry(dateStr);
+          calendarDays.appendChild(cell);
         }
-        logContainer.appendChild(entryDiv);
-      } else {
-        logContainer.innerHTML = `<div class="log-entry"><h3>${dateStr}</h3><p>No entry for this day.</p></div>`;
       }
-    }
 
-    prevBtn.addEventListener('click', () => {
-      current.setMonth(current.getMonth() - 1);
-      buildCalendar();
+      function showEntry(dateStr) {
+        const entry = logData[dateStr];
+        logEntry.innerHTML = '';
+        logEntry.style.display = 'block';
+        if (entry) {
+          logEntry.innerHTML = `<h3>${dateStr}</h3><p>${entry.note}</p>`;
+          if (entry.image) {
+            logEntry.innerHTML += `<img src="${entry.image}" alt="Surf log image">`;
+          }
+        } else {
+          logEntry.innerHTML = `<h3>${dateStr}</h3><p>No entry for this day.</p>`;
+        }
+      }
+
+      prevBtn.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        renderCalendar();
+      };
+
+      nextBtn.onclick = () => {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        renderCalendar();
+      };
+
+      initializeCalendarHeader();
+
+      fetch('surf-log.json')
+        .then(res => res.json())
+        .then(data => {
+          logData = data;
+          renderCalendar();
+        })
+        .catch(err => {
+          console.error('Failed to load surf log JSON', err);
+          renderCalendar();
+        });
     });
-
-    nextBtn.addEventListener('click', () => {
-      current.setMonth(current.getMonth() + 1);
-      buildCalendar();
-    });
-
-    // Ensure log data loads first, then build the calendar
-    fetch('surf-log.json')
-      .then(res => res.json())
-      .then(data => {
-        logData = data;
-        buildCalendar();
-      });
   </script>
 </body>
 </html>
+
 
 
 
