@@ -111,23 +111,6 @@
 
     let logData = {};
 
-    fetch('surf-log.json')
-      .then(res => res.json())
-      .then(data => {
-        logData = data;
-        buildCalendar();
-      });
-
-    prevBtn.addEventListener('click', () => {
-      current.setMonth(current.getMonth() - 1);
-      buildCalendar();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      current.setMonth(current.getMonth() + 1);
-      buildCalendar();
-    });
-
     function buildCalendar() {
       calendarContainer.innerHTML = '';
       const year = current.getFullYear();
@@ -159,9 +142,6 @@
       }
     }
 
-    // Ensure calendar shows on page load
-    window.addEventListener('DOMContentLoaded', buildCalendar);
-
     function showEntry(dateStr) {
       const entry = logData[dateStr];
       logContainer.innerHTML = '';
@@ -180,8 +160,27 @@
         logContainer.innerHTML = `<div class="log-entry"><h3>${dateStr}</h3><p>No entry for this day.</p></div>`;
       }
     }
+
+    prevBtn.addEventListener('click', () => {
+      current.setMonth(current.getMonth() - 1);
+      buildCalendar();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      current.setMonth(current.getMonth() + 1);
+      buildCalendar();
+    });
+
+    // Ensure log data loads first, then build the calendar
+    fetch('surf-log.json')
+      .then(res => res.json())
+      .then(data => {
+        logData = data;
+        buildCalendar();
+      });
   </script>
 </body>
 </html>
+
 
 
