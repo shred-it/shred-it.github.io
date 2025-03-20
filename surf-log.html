@@ -38,7 +38,7 @@
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
+      gap: 6px;
     }
     .calendar-header {
       font-weight: bold;
@@ -48,12 +48,13 @@
     .calendar-day {
       background-color: #111;
       border: 1px solid #FFBB55;
-      border-radius: 8px;
-      padding: 12px;
-      min-height: 80px;
+      border-radius: 6px;
+      padding: 8px;
+      min-height: 50px;
       position: relative;
       cursor: pointer;
       text-align: center;
+      font-size: 14px;
     }
     .calendar-day.marked::after {
       content: "";
@@ -165,11 +166,13 @@
       prevBtn.onclick = () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
         renderCalendar();
+        logEntry.style.display = 'none';
       };
 
       nextBtn.onclick = () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
         renderCalendar();
+        logEntry.style.display = 'none';
       };
 
       initializeCalendarHeader();
@@ -188,6 +191,7 @@
   </script>
 </body>
 </html>
+
 
 
 
