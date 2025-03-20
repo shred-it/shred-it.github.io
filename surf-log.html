@@ -4,23 +4,97 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surf Log Calendar</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    body {
+      background-color: black;
+      color: #FFBB55;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 20px;
+    }
+    .calendar-container {
+      max-width: 900px;
+      margin: auto;
+    }
+    .calendar-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .calendar-nav button {
+      background-color: #111;
+      color: #FFBB55;
+      border: 1px solid #FFBB55;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .calendar-nav h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 6px;
+    }
+    .calendar-header {
+      font-weight: bold;
+      text-align: center;
+      padding-bottom: 10px;
+    }
+    .calendar-day {
+      background-color: #111;
+      border: 1px solid #FFBB55;
+      border-radius: 6px;
+      padding: 8px;
+      min-height: 50px;
+      position: relative;
+      cursor: pointer;
+      text-align: center;
+      font-size: 14px;
+    }
+    .calendar-day.marked::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #E597E4;
+      border-radius: 50%;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .log-entry {
+      margin-top: 30px;
+      border: 1px solid #FFBB55;
+      background-color: #1c1c1c;
+      padding: 16px;
+      border-radius: 10px;
+      display: none;
+    }
+    .log-entry img {
+      max-width: 100%;
+      border: 2px solid #FFBB55;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
   <div id="nav-placeholder">[Loading navigation...]</div>
-  <div class="surf-log">
-    <h1>Surf Log</h1>
-    <div class="calendar-container">
-      <div class="calendar-nav">
-        <button id="prev-month">◀ Prev</button>
-        <h2 id="month-year"></h2>
-        <button id="next-month">Next ▶</button>
-      </div>
-      <div class="calendar-grid" id="calendar-header"></div>
-      <div class="calendar-grid" id="calendar-days"></div>
+  <h1>Surf Log</h1>
+  <div class="calendar-container">
+    <div class="calendar-nav">
+      <button id="prev-month">◀ Prev</button>
+      <h2 id="month-year"></h2>
+      <button id="next-month">Next ▶</button>
     </div>
-    <div id="log-entry" class="log-entry"></div>
+    <div class="calendar-grid" id="calendar-header"></div>
+    <div class="calendar-grid" id="calendar-days"></div>
   </div>
+  <div id="log-entry" class="log-entry"></div>
 
   <script>
     // Load navigation bar
@@ -94,9 +168,6 @@
           if (entry.image) {
             logEntry.innerHTML += `<img src="${entry.image}" alt="Surf log image">`;
           }
-          if (entry.video) {
-            logEntry.innerHTML += `<video controls><source src="${entry.video}" type="video/mp4">Your browser does not support the video tag.</video>`;
-          }
         } else {
           logEntry.innerHTML = `<h3>${dateStr}</h3><p>No entry for this day.</p>`;
         }
@@ -130,4 +201,3 @@
   </script>
 </body>
 </html>
-
