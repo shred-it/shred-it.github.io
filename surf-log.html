@@ -3,15 +3,113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Surf Log</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <title>Surf Log Calendar</title>
+  <link rel="stylesheet" href="style.css?v=2">
+  <style>
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .calendar-day {
+      border: 1px solid #FFBB55;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      background-color: #111;
+      color: #FFBB55;
+      border-radius: 8px;
+      position: relative;
+    }
+    .calendar-day.marked::after {
+      content: "";
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #E597E4;
+      border-radius: 50%;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .log-entry {
+      margin-top: 20px;
+      padding: 16px;
+      border: 1px solid #FFBB55;
+      background-color: #1c1c1c;
+      border-radius: 12px;
+    }
+    .log-entry img {
+      max-width: 100%;
+      margin-top: 12px;
+      border: 2px solid #FFBB55;
+    }
+  </style>
 </head>
 <body>
   <div id="nav-placeholder">[Loading navigation...]</div>
-
   <h1>Surf Log</h1>
-  <p>In progress...</p>
+  <div id="calendar" class="calendar"></div>
+  <div id="log-entry-container"></div>
 
-  <script src="scripts.js?v=3" defer></script>
+  <script src="scripts.js?v=2" defer></script>
+  <script>
+    const calendarContainer = document.getElementById('calendar');
+    const logContainer = document.getElementById('log-entry-container');
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = today.getMonth();
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    const pad = (num) => String(num).padStart(2, '0');
+
+    let logData = {};
+
+    fetch('surf-log.json')
+      .then(res => res.json())
+      .then(data => {
+        logData = data;
+        buildCalendar();
+      });
+
+    function buildCalendar() {
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${pad(month + 1)}-${pad(day)}`;
+        const dayEl = document.createElement('div');
+        dayEl.classList.add('calendar-day');
+        dayEl.textContent = day;
+
+        if (logData[dateStr]) {
+          dayEl.classList.add('marked');
+        }
+
+        dayEl.addEventListener('click', () => showEntry(dateStr));
+        calendarContainer.appendChild(dayEl);
+      }
+    }
+
+    function showEntry(dateStr) {
+      const entry = logData[dateStr];
+      logContainer.innerHTML = '';
+      if (entry) {
+        const entryDiv = document.createElement('div');
+        entryDiv.classList.add('log-entry');
+        entryDiv.innerHTML = `<h3>${dateStr}</h3><p>${entry.note}</p>`;
+        if (entry.image) {
+          const img = document.createElement('img');
+          img.src = entry.image;
+          img.alt = `Surf log image for ${dateStr}`;
+          entryDiv.appendChild(img);
+        }
+        logContainer.appendChild(entryDiv);
+      } else {
+        logContainer.innerHTML = `<div class="log-entry"><h3>${dateStr}</h3><p>No entry for this day.</p></div>`;
+      }
+    }
+  </script>
 </body>
 </html>
+
