@@ -80,6 +80,11 @@
       border: 2px solid #FFBB55;
       margin-top: 10px;
     }
+    .log-entry video {
+      width: 100%;
+      margin-top: 10px;
+      border: 2px solid #FFBB55;
+    }
   </style>
 </head>
 <body>
@@ -168,6 +173,9 @@
           if (entry.image) {
             logEntry.innerHTML += `<img src="${entry.image}" alt="Surf log image">`;
           }
+          if (entry.video) {
+            logEntry.innerHTML += `<video controls><source src="${entry.video}" type="video/mp4">Your browser does not support the video tag.</video>`;
+          }
         } else {
           logEntry.innerHTML = `<h3>${dateStr}</h3><p>No entry for this day.</p>`;
         }
@@ -201,3 +209,4 @@
   </script>
 </body>
 </html>
+
