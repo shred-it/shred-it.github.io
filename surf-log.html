@@ -163,7 +163,13 @@
           cell.onclick = () => showEntry(dateStr);
           calendarDays.appendChild(cell);
         }
-      }
+      
+  // Disable Prev button if at Jan 2025
+  const isAtEarliest = currentDate.getFullYear() === 2025 && currentDate.getMonth() === 0;
+  prevBtn.disabled = isAtEarliest;
+  prevBtn.style.opacity = isAtEarliest ? 0.5 : 1;
+  prevBtn.style.cursor = isAtEarliest ? 'not-allowed' : 'pointer';
+}
 
       function showEntry(dateStr) {
         const entry = logData[dateStr];
